@@ -1,9 +1,11 @@
+import 'package:bmi_calculator/screens/result_page.dart';
 import 'package:flutter/material.dart';
 import 'package:bmi_calculator/widgets/reusable_column.dart';
 import 'package:bmi_calculator/widgets/reusable_container.dart';
 import 'package:bmi_calculator/constants/const.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:bmi_calculator/widgets/last_row_wid.dart';
+import 'package:bmi_calculator/calc_brain.dart';
 
 enum GenderName { male, female }
 
@@ -150,15 +152,38 @@ class _InputPageState extends State<InputPage> {
               ],
             ),
           ),
-          Container(
-            height: kBottomContainerHeight,
-            color: kBottomContainerColor,
-            width: double.infinity,
+          GestureDetector(
+            onTap: () {
+              String bmi = BmiCalculator(height: sliderHeight, weight: weight)
+                  .calculateBMI();
+              String weightState =
+                  BmiCalculator(height: sliderHeight, weight: weight).getBMI();
+              String interpretation =
+                  BmiCalculator(height: sliderHeight, weight: weight)
+                      .getInterpretation();
+
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MySecondpage(
+                            getResult: weightState,
+                            getBmi: bmi,
+                            getInterPretation: interpretation,
+                          )));
+            },
+            child: Container(
+              height: kBottomContainerHeight,
+              color: kBottomContainerColor,
+              width: double.infinity,
+              child: Center(
+                  child: Text(
+                'Calculate',
+                style: TextStyle(fontSize: 30.0),
+              )),
+            ),
           )
         ],
       ),
     );
   }
 }
-
-
